@@ -1,7 +1,7 @@
 package com.example.SpringSecurityJwt.security;
 
 import com.example.SpringSecurityJwt.security.filters.JwtAuthenticationFilter;
-import com.example.SpringSecurityJwt.security.filters.JwtAuthorizationFiler;
+import com.example.SpringSecurityJwt.security.filters.JwtAuthorizationFilter;
 import com.example.SpringSecurityJwt.security.jwt.JwtUtils;
 import com.example.SpringSecurityJwt.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class SecurityConfig {
     JwtUtils jwtUtils;
 
     @Autowired
-    JwtAuthorizationFiler jwtAuthorizationFiler;
+    JwtAuthorizationFilter jwtAuthorizationFilter;
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
@@ -44,18 +44,9 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .addFilter(jwtAuthenticationFilter)
-            .addFilterBefore(jwtAuthorizationFiler, JwtAuthenticationFilter.class)
+            .addFilterBefore(jwtAuthorizationFilter, JwtAuthenticationFilter.class)
             .build();
     }
-
-    /*@Bean
-    UserDetailsService userDetailsService() {
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-
-        manager.createUser(User.withUsername("eduardo").password("1234").roles("USER").build());
-
-        return manager;
-    }*/
 
     @Bean
     PasswordEncoder passwordEncoder() {
